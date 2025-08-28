@@ -22,21 +22,21 @@ const Footer = () => {
           <div className="footer-section">
             <h3>Вареники от бабушки</h3>
             <p>Натуральные продукты ручной работы с любовью и заботой о вашем здоровье</p>
-            <div className="social-links">
-              <a href="#" className="social-link">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a href="#" className="social-link">
-                <i className="fab fa-vk"></i>
-              </a>
-              <a href="#" className="social-link">
-                <i className="fab fa-telegram"></i>
-              </a>
-              <a href="#" className="social-link">
-                <i className="fab fa-whatsapp"></i>
-              </a>
+           <div className="social-links">
+                <a href="https://instagram.com/ваш_аккаунт" className="social-link" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-instagram"></i>
+                </a>
+                <a href="https://vk.com/ваш_аккаунт" className="social-link" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-vk"></i>
+                </a>
+                <a href="https://t.me/ваш_аккаунт" className="social-link" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-telegram"></i>
+                </a>
+                <a href="https://wa.me/79991234567" className="social-link" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-whatsapp"></i>
+                </a>
+                </div>
             </div>
-          </div>
           
           <div className="footer-section">
             <h4>Навигация</h4>
