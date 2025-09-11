@@ -35,10 +35,15 @@ const About = () => {
                 <i className="fas fa-history"></i>
                 <span>Семейные традиции</span>
               </div>
+              <div className="feature">
+                <i className="fas fa-handshake"></i>
+                <span>Доверие клиентов</span>
+              </div>
+              <div className="feature">
+                <i className="fas fa-leaf"></i>
+                <span>Экологичность</span>
+              </div>
             </div>
-          </div>
-          <div className="about-image">
-            <img src="/img/about-family.webp" alt="Семейное производство" />
           </div>
         </div>
       </div>

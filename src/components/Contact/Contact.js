@@ -1,111 +1,57 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Contact.css';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Здесь будет логика отправки формы
-    console.log('Форма отправлена:', formData);
-    alert('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
-    setFormData({ name: '', email: '', phone: '', message: '' });
-  };
-
   return (
     <section id="contact" className="contact">
       <div className="container">
         <h2 className="section-title">Свяжитесь с нами</h2>
         <div className="contact-content">
           <div className="contact-info">
-            <h3>Наши контакты</h3>
             <div className="contact-item">
-              <i className="fas fa-phone"></i>
-              <div>
-                <h4>Телефон</h4>
+              <div className="contact-icon">
+                <i className="fas fa-phone"></i>
+              </div>
+              <div className="contact-details">
+                <h3>Телефон</h3>
                 <p>+7 (999) 123-45-67</p>
+                <p>+7 (495) 765-43-21</p>
               </div>
             </div>
+            
             <div className="contact-item">
-              <i className="fas fa-envelope"></i>
-              <div>
-                <h4>Email</h4>
-                <p>info@vareniki.ru</p>
+              <div className="contact-icon">
+                <i className="fas fa-envelope"></i>
+              </div>
+              <div className="contact-details">
+                <h3>Email</h3>
+                <p>info@vareniki-family.ru</p>
+                <p>orders@vareniki-family.ru</p>
               </div>
             </div>
+            
             <div className="contact-item">
-              <i className="fas fa-map-marker-alt"></i>
-              <div>
-                <h4>Адрес</h4>
-                <p>г. Москва, ул. Вкусная, д. 15</p>
+              <div className="contact-icon">
+                <i className="fas fa-map-marker-alt"></i>
+              </div>
+              <div className="contact-details">
+                <h3>Адрес</h3>
+                <p>г. Москва, ул. Вареничная, д. 15</p>
+                <p>Производство: г. Московская область, г. Люберцы</p>
               </div>
             </div>
+            
             <div className="contact-item">
-              <i className="fas fa-clock"></i>
-              <div>
-                <h4>Время работы</h4>
-                <p>Пн-Пт: 9:00-18:00<br/>Сб-Вс: 10:00-16:00</p>
+              <div className="contact-icon">
+                <i className="fas fa-clock"></i>
+              </div>
+              <div className="contact-details">
+                <h3>Режим работы</h3>
+                <p>Пн-Пт: 9:00 - 18:00</p>
+                <p>Сб-Вс: 10:00 - 16:00</p>
               </div>
             </div>
           </div>
-          
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <h3>Отправить сообщение</h3>
-            <div className="form-group">
-              <input
-                type="text"
-                name="name"
-                placeholder="Ваше имя"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="email"
-                name="email"
-                placeholder="Ваш Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Ваш телефон"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <textarea
-                name="message"
-                placeholder="Ваше сообщение"
-                rows="5"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-            <button type="submit" className="btn contact-btn">
-              Отправить сообщение
-            </button>
-          </form>
         </div>
       </div>
     </section>

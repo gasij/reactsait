@@ -42,14 +42,10 @@ const Products = () => {
             <div key={product.id} className="product-card">
               <div className="product-image">
                 <img src={product.image} alt={product.name} />
-                <div className="product-overlay">
-                  <button className="btn product-btn">Подробнее</button>
-                </div>
               </div>
               <div className="product-info">
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
-                <div className="product-price">{product.price}</div>
               </div>
             </div>
           ))}

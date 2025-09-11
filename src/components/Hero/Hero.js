@@ -2,28 +2,25 @@ import React from 'react';
 import './Hero.css';
 
 const Hero = () => {
-  const scrollToProducts = () => {
-    const section = document.getElementById('products');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+  const heroStyle = {
+    background: `linear-gradient(rgba(45, 36, 36, 0.7), rgba(26, 18, 11, 0.8)), url(${process.env.PUBLIC_URL}/img/main.webp) no-repeat center/cover`,
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    padding: '120px 0 60px'
   };
 
   return (
-    <section id="hero" className="hero">
+    <section id="hero" className="hero" style={heroStyle}>
       <div className="hero-content">
         <h1 className="hero-title">
-          Вкус детства в каждом <span className="accent-text">варенике</span>
+          Вкус детства в каждом <span className="accent-text">продукте</span>
         </h1>
         <p className="hero-subtitle">
           Натуральные продукты ручной работы с любовью и заботой о вашем здоровье
         </p>
-        <button className="btn hero-btn" onClick={scrollToProducts}>
-          Выбрать продукцию
-        </button>
-      </div>
-      <div className="hero-image">
-        <img src="/img/hero-varenik.webp" alt="Вареники ручной работы" />
       </div>
     </section>
   );

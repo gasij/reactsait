@@ -1,39 +1,21 @@
 .benefits {
   background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
-  padding: 80px 0;
+  padding: 100px 0;
 }
 
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
-  margin-top: 50px;
 }
 
 .benefit-card {
   background: rgba(255, 255, 255, 0.05);
   padding: 40px 30px;
-  border-radius: 15px;
+  border-radius: 20px;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
-}
-
-.benefit-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(224, 185, 115, 0.1), transparent);
-  transition: left 0.5s ease;
-}
-
-.benefit-card:hover::before {
-  left: 100%;
 }
 
 .benefit-card:hover {
@@ -44,31 +26,56 @@
 .benefit-icon {
   width: 80px;
   height: 80px;
-  margin: 0 auto 20px;
+  margin: 0 auto 25px;
   background: linear-gradient(45deg, var(--accent), var(--accent-light));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: var(--dark);
-  transition: transform 0.3s ease;
+  position: relative;
 }
 
-.benefit-card:hover .benefit-icon {
-  transform: scale(1.1) rotate(360deg);
+.benefit-icon::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  background: linear-gradient(45deg, var(--accent), var(--accent-light));
+  border-radius: 50%;
+  opacity: 0.3;
+  z-index: -1;
+  animation: pulse 2s infinite;
+}
+
+.benefit-icon i {
+  font-size: 2.5rem;
+  color: white;
 }
 
 .benefit-card h3 {
-  color: var(--accent);
+  font-size: 1.5rem;
   margin-bottom: 15px;
-  font-size: 1.3rem;
+  color: var(--accent);
 }
 
 .benefit-card p {
   color: var(--text-light);
   line-height: 1.6;
   margin: 0;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
 }
 
 @media (max-width: 768px) {
@@ -82,8 +89,16 @@
   }
   
   .benefit-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+  }
+  
+  .benefit-icon i {
+    font-size: 2rem;
+  }
+  
+  .benefit-card h3 {
+    font-size: 1.3rem;
   }
 }

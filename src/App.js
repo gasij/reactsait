@@ -5,7 +5,7 @@ import About from './components/About/About';
 import Products from './components/Products/Products';
 import Gallery from './components/Gallery/Gallery';
 import Benefits from './components/Benefits/Benefits';
-import Contact from './components/Contact/Contact';
+//import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import './App.css';
 
@@ -18,7 +18,7 @@ function App() {
       <Products />
       <Gallery />
       <Benefits />
-      <Contact />
+      
       <Footer />
     </div>
   );

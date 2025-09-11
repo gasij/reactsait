@@ -46,9 +46,7 @@ const Header = () => {
             <a href="#gallery" onClick={() => scrollToSection('gallery')}>
               <i className="fas fa-book"></i> Галерея
             </a>
-            <a href="#contact" onClick={() => scrollToSection('contact')}>
-              <i className="fas fa-phone-alt"></i> Контакты
-            </a>
+            
           </div>
         </nav>
       </div>
