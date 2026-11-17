@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Семейное производство
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Next.js App Router + React, Feature-Sliced Design, GSAP и React Three Fiber. Проект перенесён с Create React App; старые точки входа и react-scripts удалены. Код остаётся на JavaScript/JSX.
 
-## Available Scripts
+## Запуск и проверки
 
-In the project directory, you can run:
+Нужен Node.js 20.9+.
 
-### `npm start`
+```bash
+npm ci
+npm run dev
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Локальная разработка: http://localhost:3000.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm run check:architecture
+npm test
+npm run build
+npm start
+```
 
-### `npm test`
+`npm run build` создаёт статический сайт в `out/`. `npm start` раздаёт готовый экспорт, поэтому сначала нужна сборка. Для другого порта: `PORT=4173 npm start`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Архитектура
 
-### `npm run build`
+```text
+app/                         маршруты и корневой layout Next.js
+src/
+  _app/                      провайдеры приложения и глобальные стили
+  _pages/home/               серверная композиция главной, координация анимаций
+  widgets/                   header, hero, каталог, подборки, история, footer
+  features/filter-products/  выбор категории и раскрытие каталога
+  features/view-product/     открытие и закрытие описания продукта
+  entities/product/          данные, категории, карточка продукта
+  shared/                    общие UI-элементы, motion context, ресурсы
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Имена `_app` и `_pages` следуют [рекомендациям FSD для Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs), чтобы не конфликтовать с роутером. Срезы экспортируют публичный API через `index.js`. Импорты направлены вниз по слоям; соседние срезы одного слоя друг друга не импортируют. `check:architecture` проверяет границы, публичные API и разрешение внутренних импортов.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Маршруты, главная композиция, история производства и текстовые блоки — Server Components. Состояние фильтров, диалог, меню, GSAP и декоративный 3D-фон — Client Components. Фоновая сцена загружается автоматически через `next/dynamic` с `ssr: false`. Клиентские провайдеры принимают серверный контент через `children`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Компоновка
 
-### `npm run eject`
+1. Короткое предложение и большая фотография продукта.
+2. Подборки сладкого и сытного с переходом к нужной категории.
+3. Каталог 11 продуктов с фильтрацией и описаниями.
+4. История семейного производства.
+5. Заключительный переход в каталог.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Сохраняются льняная палитра, орнаменты, GSAP-переходы и настройка уменьшения движения. Исходные фото сохранены; сайт использует оптимизированные копии и `next/image`. В статическом экспорте изображения настроены как `unoptimized`, поскольку серверного сервиса ресайза нет.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Контакты и приём заказов не подключены. Цены и описание перенесены из исходного сайта. Домен для Open Graph задаётся необязательным `NEXT_PUBLIC_SITE_URL` (см. `.env.example`); до настройки домен не выдумывается.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Визуальная проверка ограничена доступностью подключённого браузера; подробности — в `DESIGN.md`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Фон с парящими варениками
 
-## Learn More
+Сцена по мотивам [Flying Bananas](https://pmndrs.github.io/examples/flying-bananas/) — фиксированный фон всей страницы. Загружается автоматически, без кнопки 3D и отдельной панели. При прокрутке вареники движутся по волнистым траекториям, переворачиваются и приближаются к камере; при прокрутке обратно возвращаются по той же траектории. DOF размывает ближние и дальние объекты.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Фон не перехватывает клики и скрыт от скринридеров. Полупрозрачные поверхности сохраняют читаемость текста. На компьютере добавлен мягкий параллакс от мыши. Положение сцены вычисляется из прокрутки и положения указателя, а не времени: после остановки прокрутки завершается только короткое сглаживание, затем рендеринг останавливается. На мобильном экране объектов меньше. Общий переключатель анимаций, системное уменьшение движения и скрытие вкладки останавливают обновление. Без WebGL остаётся обычный льняной фон; фотографии продукции сохраняются в контенте.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Срез FSD: `widgets/dumpling-background`. Один Canvas и одна общая инстансированная геометрия для 24 объектов на большом экране и 12 на компактном.
 
-### Code Splitting
+## Айдентика Дивновкусье
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Визуальная система перенесена из предоставленных материалов `../uid`: логотип, птицы, фестончатые формы, сцены ручной лепки, Minipax и Montserrat. Шрифты подключены локально. Принципы и источники описаны в `docs/brand-guidelines.md`, соответствие производных изображений исходникам — в `public/brand/sources.json`.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Зелёный и вишнёвый используются крупными цветовыми секциями и чередуются в карточках; светлые участки сохраняют видимость анимированного фона. Фон с парящими варениками и его связь с прокруткой сохранены. История производства обновлена по PDF: Алексей и Мария, 10 лет семейного дела.

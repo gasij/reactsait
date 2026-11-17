@@ -1,0 +1,11 @@
+{
+ "page": null,
+ "url": "http://localhost:3000/",
+ "root": null,
+ "kind": "product",
+ "category": "Вареники ручной лепки",
+ "primary": "Выбрать вареники",
+ "rounds": 3,
+ "start": "2026-11-16T13:01:49.937Z",
+ "by": "gate.mjs --start"
+}

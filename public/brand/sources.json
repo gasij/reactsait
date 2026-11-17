@@ -1,0 +1,52 @@
+{
+  "logo-dark": {
+    "source": "uid/Elements/Divobludo_logo-02.png",
+    "width": 1100,
+    "height": 465
+  },
+  "logo-cream": {
+    "source": "uid/Elements/Divobludo_logo-01.png",
+    "width": 1100,
+    "height": 465
+  },
+  "bird-cherry": {
+    "source": "uid/Elements/Illust_ptitca_red.png",
+    "width": 640,
+    "height": 1209
+  },
+  "bird-green": {
+    "source": "uid/Elements/Illust_ptitca_green.png",
+    "width": 640,
+    "height": 1210
+  },
+  "napkin-cherry": {
+    "source": "uid/Elements/Divobludo_salf-02.png",
+    "width": 1200,
+    "height": 981
+  },
+  "napkin-green": {
+    "source": "uid/Elements/Divobludo_salf-06.png",
+    "width": 1200,
+    "height": 981
+  },
+  "cooking-cherry": {
+    "source": "uid/Elements/женщина в фартуке_с фоном_вишня.png",
+    "width": 1800,
+    "height": 1005
+  },
+  "cooking-green": {
+    "source": "uid/Elements/женщина в фартуке_с фоном_сулугуни.png",
+    "width": 1800,
+    "height": 1005
+  },
+  "craft-cherry": {
+    "source": "uid/Elements/женщина в фартуке_вишня.png",
+    "width": 1800,
+    "height": 1005
+  },
+  "craft-green": {
+    "source": "uid/Elements/женщина в фартуке_сулугуни.png",
+    "width": 1800,
+    "height": 1005
+  }
+}
