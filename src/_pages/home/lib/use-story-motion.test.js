@@ -3,9 +3,9 @@ import { render } from '@testing-library/react';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import useStoryMotion from './use-story-motion';
 
-function Page({ paused = false, catalog = 'all' }) {
+function Page({ paused = false }) {
   const root = useRef();
-  useStoryMotion(root, catalog, paused);
+  useStoryMotion(root, paused);
   return <div ref={root}><div className="hero-letter">В</div><div className="hero-topline">Лепим</div><div className="hero-copy"><p>Вручную</p><a href="#products">Меню</a></div><div className="hero-visual" /><div className="hero-side" /><div className="section-heading">Меню</div><div className="products-grid"><div className="product-card">Вишня</div></div><div className="production-photo" /><div className="closing"><h2>К столу</h2><div className="closing-flower" /></div></div>;
 }
 
@@ -38,11 +38,11 @@ test('disabling motion reverts hidden states and removes scroll triggers', () =>
   unmount();
 });
 
-test('StrictMode and catalog changes leave no triggers after unmount', () => {
+test('StrictMode leaves no triggers after unmount', () => {
   preference(false);
   const { rerender, unmount } = render(<React.StrictMode><Page /></React.StrictMode>);
   const before = ScrollTrigger.getAll().length;
-  rerender(<React.StrictMode><Page catalog="sweet" /></React.StrictMode>);
+  rerender(<React.StrictMode><Page /></React.StrictMode>);
   expect(ScrollTrigger.getAll()).toHaveLength(before);
   unmount();
   expect(ScrollTrigger.getAll()).toHaveLength(0);

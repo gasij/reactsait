@@ -4,13 +4,12 @@ import { categories } from '@/entities/product';
 const FilterContext = createContext(null);
 export function ProductFilterProvider({ children }) {
   const [category, setCategory] = useState('all');
-  const [expanded, setExpanded] = useState(false);
-  const value = useMemo(() => ({ category, expanded, setExpanded,
-    chooseCategory(next, showAll = false) {
+  const value = useMemo(() => ({ category,
+    chooseCategory(next) {
       if (!categories.some(item => item.id === next)) return;
-      setCategory(next); setExpanded(showAll);
+      setCategory(next);
     }
-  }), [category, expanded]);
+  }), [category]);
   return <FilterContext.Provider value={value}>{children}</FilterContext.Provider>;
 }
 export function useProductFilter() {

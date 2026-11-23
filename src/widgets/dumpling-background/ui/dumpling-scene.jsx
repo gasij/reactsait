@@ -2,10 +2,17 @@
 import React, { Component, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { DepthOfField, EffectComposer, ToneMapping } from '@react-three/postprocessing';
-import { Object3D, MeshStandardMaterial, DynamicDrawUsage } from 'three';
+import { Color, Object3D, MeshStandardMaterial, DynamicDrawUsage } from 'three';
 import { createDumplingGeometry } from '../lib/dumpling-geometry';
 import { getScrollPose, createFlightField } from '../lib/dumpling-flight';
 import { useScenePlayback } from '../lib/use-scene-playback';
+
+const doughColors = [
+  new Color('#7564b2'), // blueberry violet
+  new Color('#ed995e'), // apricot
+  new Color('#faf8f4'), // milk white
+  new Color('#da7d9b'), // pink
+];
 
 function FlyingDumplings({ playing, compact, depthOfField }) {
   const instances = useRef();
@@ -13,7 +20,7 @@ function FlyingDumplings({ playing, compact, depthOfField }) {
   const count = compact ? 12 : 24;
   const flights = useMemo(() => createFlightField(count, size.width / size.height), [count, size.width, size.height]);
   const geometry = useMemo(createDumplingGeometry, []);
-  const material = useMemo(() => new MeshStandardMaterial({ color: '#d6b384', roughness: 0.72, metalness: 0 }), []);
+  const material = useMemo(() => new MeshStandardMaterial({ vertexColors: true, roughness: 0.76, metalness: 0 }), []);
   const transform = useMemo(() => new Object3D(), []);
   const scroll = useRef({ current: 0, target: 0 });
   const pointer = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
@@ -31,7 +38,10 @@ function FlyingDumplings({ playing, compact, depthOfField }) {
     instances.current.instanceMatrix.needsUpdate = true;
   }, [flights, transform]);
   useLayoutEffect(() => {
-    instances.current.instanceMatrix.setUsage(DynamicDrawUsage);
+    const mesh = instances.current;
+    mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+    for (let i = 0; i < mesh.count; i++) mesh.setColorAt(i, doughColors[i % doughColors.length]);
+    mesh.instanceColor.needsUpdate = true;
     place(); invalidate();
   }, [flights, place, invalidate]);
   useEffect(() => { invalidate(); }, [playing, depthOfField, invalidate]);
@@ -75,9 +85,9 @@ function FlyingDumplings({ playing, compact, depthOfField }) {
   return <>
     <color attach="background" args={['#ece5dd']} />
     <fog attach="fog" args={['#ece5dd', 22, 48]} />
-    <ambientLight intensity={1.1} />
-    <hemisphereLight args={['#fff6df', '#8e7959', 1.8]} />
-    <directionalLight position={[-5, 8, 12]} intensity={3.2} />
+    <ambientLight intensity={0.65} />
+    <hemisphereLight args={['#fff6df', '#8e7959', 1.3]} />
+    <directionalLight position={[-6, 8, 5]} intensity={3.2} />
     <directionalLight position={[5, -3, 2]} intensity={1.1} color="#ffe8bc" />
     <instancedMesh key={count} ref={instances} args={[geometry, material, count]} frustumCulled={false} />
     {depthOfField && <EffectComposer multisampling={0} enableNormalPass={false}>

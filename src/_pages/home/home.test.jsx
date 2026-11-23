@@ -2,47 +2,28 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { HomePage as App } from './index';
 import { MotionProvider } from '@/shared/lib/motion';
 const Page = () => <MotionProvider><App /></MotionProvider>;
-jest.mock('@/widgets/hero/ui/product-showcase', () => ({ ProductShowcase: () => <div aria-label="3D-вареник" /> }));
 jest.mock('@/widgets/dumpling-background', () => ({ DumplingBackground: () => <div data-testid="scroll-background" aria-hidden="true" /> }));
 beforeAll(() => {
   HTMLDialogElement.prototype.showModal = function () {
     this.setAttribute('open', '');
   };
 });
-test('catalog expands and filters all eleven original products into the correct categories', async () => {
+test('the home catalog contains the book and filters its spreads', () => {
   render(<Page />);
-  await screen.findByLabelText('3D-вареник');
-  expect(screen.getAllByRole('article')).toHaveLength(6);
-  fireEvent.click(screen.getByRole('button', {
-    name: /Показать всё меню/
-  }));
-  expect(screen.getAllByRole('article')).toHaveLength(11);
-  fireEvent.click(screen.getByRole('button', {
-    name: 'Несладкие вареники'
-  }));
-  expect(screen.getAllByRole('article')).toHaveLength(1);
-  expect(within(screen.getByRole('article')).getByRole('heading')).toHaveTextContent('Сулугуни');
-  fireEvent.click(screen.getByRole('button', {
-    name: 'Домашние блюда'
-  }));
-  expect(screen.getAllByRole('article')).toHaveLength(3);
-  expect(screen.getByRole('button', {
-    name: 'Домашние блюда'
-  })).toHaveAttribute('aria-pressed', 'true');
-  fireEvent.click(screen.getByRole('button', {
-    name: 'Сладкие вареники'
-  }));
-  expect(screen.getAllByRole('article')).toHaveLength(6);
-  fireEvent.click(screen.getByRole('button', {
-    name: /Показать всё меню/
-  }));
-  expect(screen.getAllByRole('article')).toHaveLength(7);
+  expect(screen.getByRole('link', { name: /Открыть книжку-меню/ })).toHaveAttribute('href', '#products');
+  const catalog = within(screen.getByRole('region', { name: /Выбирайте/ }));
+  const book = within(catalog.getByRole('region', { name: 'Книжка-меню' }));
+  expect(book.getAllByRole('option')).toHaveLength(13);
+  for (const [name, count] of [['Несладкие вареники', 1], ['Домашние блюда', 3], ['Сладкие вареники', 7], ['Всё меню', 13]]) {
+    fireEvent.click(catalog.getByRole('button', { name }));
+    expect(catalog.getAllByRole('option')).toHaveLength(count);
+    expect(catalog.getByRole('button', { name })).toHaveAttribute('aria-pressed', 'true');
+  }
 });
 test('product details show the selected product, price, and close correctly', async () => {
   render(<Page />);
-  await screen.findByLabelText('3D-вареник');
   fireEvent.click(screen.getByRole('button', {
-    name: 'Посмотреть Царь-Вишня'
+    name: 'Открыть описание Царь-Вишня'
   }));
   const dialog = screen.getByRole('dialog');
   expect(within(dialog).getByRole('heading', {
@@ -56,7 +37,6 @@ test('product details show the selected product, price, and close correctly', as
 });
 test('mobile menu toggles its accessible state and closes with Escape', async () => {
   render(<Page />);
-  await screen.findByLabelText('3D-вареник');
   fireEvent.click(screen.getByRole('button', {
     name: 'Открыть меню'
   }));
@@ -72,7 +52,6 @@ test('mobile menu toggles its accessible state and closes with Escape', async ()
 });
 test('collection links open the complete matching catalog category', async () => {
   render(<Page />);
-  await screen.findByLabelText('3D-вареник');
   fireEvent.click(screen.getByRole('link', {
     name: /На сладкой стороне/
   }));
@@ -91,7 +70,6 @@ test('collection links open the complete matching catalog category', async () =>
 
 test('visitor can disable and re-enable motion', async () => {
   render(<Page />);
-  await screen.findByLabelText('3D-вареник');
   fireEvent.click(screen.getByRole('button', { name: 'Без анимации' }));
   expect(screen.getByRole('button', { name: 'Включить анимацию' })).toHaveAttribute('aria-pressed', 'true');
   fireEvent.click(screen.getByRole('button', { name: 'Включить анимацию' }));

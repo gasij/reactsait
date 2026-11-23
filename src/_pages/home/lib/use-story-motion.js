@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 // Each context owns its tweens and triggers, including React StrictMode remounts.
-export default function useStoryMotion(root, catalogKey, paused) {
+export default function useStoryMotion(root, paused) {
   useLayoutEffect(() => {
     if (!root.current || typeof window.matchMedia !== 'function' || paused) return;
     gsap.registerPlugin(ScrollTrigger);
@@ -80,31 +80,14 @@ export default function useStoryMotion(root, catalogKey, paused) {
       const images = Array.from(root.current.querySelectorAll('img'));
       const refresh = () => ScrollTrigger.refresh();
       images.forEach(img => img.addEventListener('load', refresh));
+      const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(refresh) : null;
+      observer?.observe(rootElement);
       return () => {
         live = false;
+        observer?.disconnect();
         images.forEach(img => img.removeEventListener('load', refresh));
       };
     }, root);
     return () => media.revert();
   }, [root, paused]);
-  useLayoutEffect(() => {
-    if (!root.current || typeof window.matchMedia !== 'function' || paused) return;
-    const media = gsap.matchMedia();
-    media.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.from('.product-card', {
-        opacity: 0,
-        y: 18,
-        duration: 0.6,
-        stagger: 0.055,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.products-grid',
-          start: 'top 95%',
-          once: true
-        }
-      });
-      ScrollTrigger.refresh();
-    }, root);
-    return () => media.revert();
-  }, [root, catalogKey, paused]);
 }
