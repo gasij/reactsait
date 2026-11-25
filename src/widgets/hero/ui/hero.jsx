@@ -1,9 +1,19 @@
 import React from 'react';
-import { Arrow, FolkFlower } from '@/shared/ui';
+import Image from 'next/image';
 import { ProductShowcase } from './product-showcase';
+import s from './cover.module.css';
+
 export function Hero() {
-  return <section id="home" className="hero hero--product-first" aria-labelledby="hero-title"><div className="container hero-grid">
-    <div className="hero-copy"><p className="eyebrow hero-topline">Дивновкусье · от Семейного производства</p><h1 id="hero-title"><span className="hero-word">Вареники</span><br /><em>для своих.</em></h1><p className="hero-lead">Тонкое тесто, сочные ягоды и знакомый домашний вкус. От вишнёвой классики до манго со сливочным сыром.</p><div className="hero-actions"><a className="btn btn--primary" href="#products">Открыть книжку-меню <Arrow /></a><a className="hero-story-link" href="#about">История нашей семьи ↗</a></div><div className="hero-proof"><FolkFlower className="brand-mark" /><p>10 лет лепим вручную<br />для домашних обедов.</p></div></div>
-    <div className="hero-visual"><ProductShowcase /></div>
-  </div><div className="hero-baseline"><div className="container"><span>Тонкое тесто</span><span aria-hidden="true">✳</span><span>Сочная начинка</span><span aria-hidden="true">✳</span><span>Ручная работа</span><a href="#collection">Выбрать начинку ↓</a></div></div></section>;
+  return (
+    <section id="home" className={s.cover} aria-labelledby="hero-title">
+      <Image className={s.scene} src="/brand/editorial/invitation.webp" alt="Вареники с вишней и с сулугуни в фирменных упаковках на вышитой скатерти" width={1920} height={1080} sizes="100vw" preload />
+      <div className={s.bookmark}><span aria-hidden="true">✦</span>Новый<br />бренд</div>
+      <div className={s.copy}>
+        <span className={s.logo} role="img" aria-label="Дивновкусье от семейного производства" />
+        <h1 id="hero-title" className="hero-word">Загляните в гости<br />за вкусом</h1>
+        <a className={s.menu} href="#products">Открыть книжку-меню <span aria-hidden="true">↓</span></a>
+      </div>
+      <ProductShowcase />
+    </section>
+  );
 }

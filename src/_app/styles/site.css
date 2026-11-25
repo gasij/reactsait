@@ -1186,17 +1186,25 @@
 
 /* One fixed, decorative WebGL backdrop follows the page scroll behind content. */
 .site-shell { position: relative; isolation: isolate; }
-.site-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; user-select: none; overflow: hidden; background: var(--bg); }
+.site-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; user-select: none; overflow: hidden; background: linear-gradient(55deg, var(--wine), #891523 33%, #00532c 67%, var(--accent)); }
 .site-background .dumpling-flight, .site-background .flight-canvas { width: 100%; height: 100%; }
-.site-background .dumpling-flight { background: var(--bg); }
-.site-background canvas { display: block; opacity: .58; }
-.site-background::after { content: ''; position: absolute; inset: 0; background: rgb(236 229 221 / 24%); pointer-events: none; }
+.site-background .dumpling-flight { background: transparent; }
+.site-background .flight-canvas canvas { display: block; opacity: .30; }
+.site-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 18%, rgb(255 245 229 / 4%) 36%, transparent 55%),
+    linear-gradient(155deg, rgb(17 13 19 / 13%), rgb(13 11 16 / 24%));
+}
 .site-shell .hero { background: transparent; }
-.site-shell .catalog, .site-shell .about, .site-shell .site-footer { background: rgb(236 229 221 / 28%); }
+.site-shell .catalog, .site-shell .about, .site-shell .site-footer { background: rgb(236 228 221 / 28%); }
 .site-shell .collection { background: rgb(228 219 207 / 55%); }
 .site-shell .closing { background: rgb(225 231 218 / 58%); }
-.site-shell .site-header { background: rgb(236 229 221 / 96%); }
-.product-info { background: rgb(236 229 221 / 85%); padding-inline: 16px; }
+.site-shell .site-header { background: rgb(236 228 221 / 96%); }
+.product-info { background: rgb(236 228 221 / 85%); padding-inline: 16px; }
 .product-info .product-price>span { right: 16px; }
 
 /* Divnovkusye identity, supplied in uid: original logotype, embroidery and Minipax. */
@@ -1285,17 +1293,17 @@
 }
 
 /* Rich presentation palette: alternate green and cherry with the paper sections. */
-:root { --brand-cream: #fff1d7; }
+
 .hero-baseline { background: var(--accent); color: var(--brand-cream); border-color: var(--accent); }
 .hero-baseline a { border-color: rgb(255 241 215 / 35%); }
-.hero-baseline span[aria-hidden] { color: #f9bd87; }
+.hero-baseline span[aria-hidden] { color: var(--brand-cream); }
 .hero-baseline::before { border-color: var(--berry); opacity: .65; }
-.showcase-foot { background: var(--berry); color: var(--brand-cream); padding: 18px 20px; border: 0; margin-top: 0; }
+.showcase-foot { background: var(--wine); color: var(--brand-cream); padding: 18px 20px; border: 0; margin-top: 0; }
 .showcase-foot>span, .showcase-foot>button { color: var(--brand-cream); }
-.site-shell .collection { background: rgb(0 72 36 / 94%); color: var(--brand-cream); }
+.site-shell .collection { background: var(--wine); color: var(--brand-cream); }
 .collection .section-heading h2, .collection .section-heading h2 em { color: var(--brand-cream); }
-.collection .section-heading .eyebrow { color: #f9bd87; }
-.collection .section-heading>p { color: #e9dfca; }
+.collection .section-heading .eyebrow { color: var(--brand-cream); }
+.collection .section-heading>p { color: var(--brand-cream); }
 .product-info { background: var(--accent); color: var(--brand-cream); padding: 24px 20px 16px; }
 .product-card:nth-child(even) .product-info { background: var(--berry); }
 .product-card { padding-bottom: 0; border: 0; }
@@ -1307,7 +1315,7 @@
 .filter { border: 1px solid transparent; }
 .filter:hover { border-color: var(--berry); }
 .filter.is-active { background: var(--berry); color: var(--brand-cream); border-color: var(--berry); }
-.site-shell .closing { background: rgb(168 30 46 / 94%); color: var(--brand-cream); }
+.site-shell .closing { background: var(--wine); color: var(--brand-cream); }
 .closing h2, .closing h2 em { color: var(--brand-cream); }
 .closing .eyebrow { color: var(--brand-cream); }
 .closing .btn--primary { background: var(--brand-cream); color: var(--berry); --btn-bg: var(--brand-cream); --btn-ink: var(--berry); }
@@ -1315,8 +1323,44 @@
 .site-shell .site-footer { background: var(--accent); color: var(--brand-cream); }
 .footer-top>p, .footer-top>a:last-child, .footer-bottom, .site-footer .motion-toggle { color: var(--brand-cream); }
 .footer-bottom { border-color: rgb(255 241 215 / 30%); }
-.site-footer .motion-toggle:hover { color: #f9bd87; }
+.site-footer .motion-toggle:hover { color: var(--brand-cream); }
 @media(max-width:540px) {
   .closing .brand-bird { padding: 12px; }
   .product-info { padding: 22px 20px 14px; }
 }
+
+/* The original die-cut napkin sits on the transparent hero, leaving the
+   animated field visible around the artwork and through its scalloped edge. */
+.hero--product-first .hero-copy {
+  padding: clamp(54px, 5vw, 80px) clamp(32px, 3.6vw, 60px);
+  background: url('/brand/napkin-green.webp') center / 100% 100% no-repeat;
+  color: var(--brand-cream);
+}
+.hero--product-first .hero-copy :is(h1, em, .hero-topline, .hero-lead, .hero-proof, .brand-mark, .hero-story-link) { color: inherit; }
+.hero--product-first .hero-copy .btn--primary {
+  background: var(--brand-cream);
+  color: var(--accent);
+  --btn-bg: var(--brand-cream);
+  --btn-ink: var(--accent);
+}
+.collection-label { color: var(--brand-cream); }
+.site-shell .catalog, .site-shell .about { background: transparent; }
+.site-shell .closing {
+  background: transparent;
+  padding-inline: clamp(12px, 3vw, 48px);
+}
+.closing .closing-inner {
+  width: min(1360px, 100%);
+  padding: clamp(44px, 7vw, 110px) clamp(28px, 6vw, 92px);
+  background: var(--wine);
+  mask: url('/brand/napkin-cherry.webp') center / 100% 100% no-repeat;
+}
+.closing .brand-bird { top: 12%; max-height: 75%; }
+@media (max-width: 540px) {
+  .hero--product-first .hero-copy { padding: 50px 24px 40px; }
+  .hero--product-first .hero-copy h1 { font-size: clamp(40px, 10.5vw, 54px); }
+}
+
+.site-shell .catalog :is(.section-heading, .section-heading em, .section-heading p, .result-count),
+.site-shell .about :is(.about-heading, .about-heading em, .about-heading strong, .about-heading p, .production-foot) { color: #fff4de; text-shadow: 0 1px 4px #28131a; }
+.catalog .filter:not(.is-active) { color: var(--wine); background: var(--bg); }

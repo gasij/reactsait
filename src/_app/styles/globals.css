@@ -1,16 +1,18 @@
 :root {
-  --bg: #ece5dd;
+  --bg: #ece4dd;
   --surface: #e5d9cc;
-  --ink: #0c1922;
-  --muted: #6b6259;
+  --ink: #791116;
+  --muted: #794343;
   --accent: #004824;
-  --hero-ground: #ece5dd;
+  --hero-ground: #ece4dd;
   --line: #cabbac;
   --font-display: var(--font-minipax), Georgia, serif;
   --font-text: var(--font-montserrat), Arial, sans-serif;
   --display-weight: 400;
-  --ornament: #a81e2e;
-  --berry: #a81e2e;
+  --wine: #791116;
+  --brand-cream: #e9ddbb;
+  --ornament: #a71212;
+  --berry: #a71212;
   --display-tracking: -.04em;
   --action: var(--accent);
   --action-ink: var(--bg);

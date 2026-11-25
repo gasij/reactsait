@@ -1,7 +1,6 @@
 'use client';
 import React, { Component, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { DepthOfField, EffectComposer, ToneMapping } from '@react-three/postprocessing';
 import { Color, Object3D, MeshStandardMaterial, DynamicDrawUsage } from 'three';
 import { createDumplingGeometry } from '../lib/dumpling-geometry';
 import { getScrollPose, createFlightField } from '../lib/dumpling-flight';
@@ -14,7 +13,7 @@ const doughColors = [
   new Color('#da7d9b'), // pink
 ];
 
-function FlyingDumplings({ playing, compact, depthOfField }) {
+function FlyingDumplings({ playing, compact }) {
   const instances = useRef();
   const { size, invalidate } = useThree();
   const count = compact ? 12 : 24;
@@ -44,7 +43,7 @@ function FlyingDumplings({ playing, compact, depthOfField }) {
     mesh.instanceColor.needsUpdate = true;
     place(); invalidate();
   }, [flights, place, invalidate]);
-  useEffect(() => { invalidate(); }, [playing, depthOfField, invalidate]);
+  useEffect(() => { invalidate(); }, [playing, invalidate]);
   useEffect(() => () => { geometry.dispose(); material.dispose(); }, [geometry, material]);
   useEffect(() => {
     if (!playing) return;
@@ -83,17 +82,13 @@ function FlyingDumplings({ playing, compact, depthOfField }) {
     place(); invalidate();
   });
   return <>
-    <color attach="background" args={['#ece5dd']} />
-    <fog attach="fog" args={['#ece5dd', 22, 48]} />
+    <fog attach="fog" args={['#ece4dd', 22, 48]} />
     <ambientLight intensity={0.65} />
     <hemisphereLight args={['#fff6df', '#8e7959', 1.3]} />
     <directionalLight position={[-6, 8, 5]} intensity={3.2} />
     <directionalLight position={[5, -3, 2]} intensity={1.1} color="#ffe8bc" />
     <instancedMesh key={count} ref={instances} args={[geometry, material, count]} frustumCulled={false} />
-    {depthOfField && <EffectComposer multisampling={0} enableNormalPass={false}>
-      <DepthOfField focusDistance={18} focusRange={3.5} bokehScale={compact ? 2.5 : 4.5} resolutionScale={0.5} />
-      <ToneMapping />
-    </EffectComposer>}
+
   </>;
 }
 class SceneBoundary extends Component {
@@ -113,8 +108,8 @@ export default function DumplingScene({ motionPaused = false }) {
   }, []);
   return <div className="dumpling-stage dumpling-flight" ref={root}>
     <div className="flight-canvas">
-      {available && <SceneBoundary fallback={null}><Canvas frameloop="demand" dpr={[1, playback.compact ? 1 : 1.5]} camera={{ position: [0, 0, 18], fov: 35, near: 0.1, far: 65 }} gl={{ antialias: false, alpha: false }}>
-        <FlyingDumplings playing={playback.playing} compact={playback.compact} depthOfField={!playback.reduced} />
+      {available && <SceneBoundary fallback={null}><Canvas frameloop="demand" dpr={[1, playback.compact ? 1 : 1.5]} camera={{ position: [0, 0, 18], fov: 35, near: 0.1, far: 65 }} gl={{ antialias: true, alpha: true }}>
+        <FlyingDumplings playing={playback.playing} compact={playback.compact} />
       </Canvas></SceneBoundary>}
     </div>
   </div>;

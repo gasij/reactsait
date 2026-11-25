@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
 const halfWidth = 1.9;
-const archHeight = 1.77;
-const foldY = -0.72;
-const bellyY = -0.16;
-const bellyDepth = 0.62;
+const archHeight = 1.65;
+const foldY = -0.49;
+const bellyY = 0.02;
+const bellyDepth = 0.74;
 
 // Cross-section from the crown of the filling to the die-cut edge.
 // Each row gives the radius, the depth at a groove, and the height of its ridge.
@@ -19,10 +19,11 @@ const profile = [
 function makeOutline() {
   const outline = [];
   const teeth = 18;
-  // Broad flat lands separated by two sloping flanks and a narrow groove.
-  const toothProfile = [[0, 0], [0.10, 0], [0.30, 1], [0.70, 1], [0.90, 0]];
+  const samplesPerTooth = 8;
   for (let tooth = 0; tooth < teeth; tooth++) {
-    for (const [phase, ridge] of toothProfile) {
+    for (let sample = 0; sample < samplesPerTooth; sample++) {
+      const phase = sample / samplesPerTooth;
+      const ridge = (1 - Math.cos(2 * Math.PI * phase)) / 2;
       const angle = Math.PI * (tooth + phase) / teeth;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       const normalLength = Math.hypot(archHeight * cos, halfWidth * sin);
@@ -33,11 +34,11 @@ function makeOutline() {
       });
     }
   }
-  // The uncut fold curves in slightly between the two pinched tips.
+  // A bowed fold gives the filling room below the two pinched tips.
   const foldSegments = 32;
   for (let i = 0; i < foldSegments; i++) {
     const x = 2 * i / foldSegments - 1;
-    outline.push({ x: halfWidth * x, y: foldY + 0.15 * (1 - x * x), nx: 0, ny: 0, press: 0, ridge: 0 });
+    outline.push({ x: halfWidth * x, y: foldY - 0.56 * (1 - x * x), nx: 0, ny: 0, press: 0, ridge: 0 });
   }
   return outline;
 }
@@ -63,8 +64,10 @@ export function createDumplingGeometry() {
       const seal = THREE.MathUtils.smoothstep(radius, 0.80, 0.855);
       const foldedDepth = 0.021 + (bellyDepth - 0.021) * Math.sqrt(1 - radius * radius);
       for (const point of outline) {
-        const relief = lip * point.press * (point.ridge - 0.5) * 0.085;
-        const depth = THREE.MathUtils.lerp(foldedDepth, grooveDepth + ridgeHeight * point.ridge, point.press);
+        const relief = lip * point.press * (point.ridge - 0.5) * 0.055;
+        const pressedDepth = grooveDepth * (bellyDepth / 0.62) + ridgeHeight * point.ridge;
+        const tip = THREE.MathUtils.smoothstep(Math.abs(radius * point.x) / halfWidth, 0.7, 1);
+        const depth = THREE.MathUtils.lerp(foldedDepth, pressedDepth, point.press) * (1 - 0.72 * tip);
         positions.push(radius * point.x + relief * point.nx,
           bellyY + radius * (point.y - bellyY) + relief * point.ny, side * depth);
         // Local occlusion in the die grooves multiplies each dough's own color.
@@ -86,16 +89,10 @@ export function createDumplingGeometry() {
 
   const front = buildFace(1);
   const back = buildFace(-1);
-  // Give each cut facet its own normal so the rim keeps a crisp highlight.
+  // Share the outer ring so the pressed seam rounds into the dough on both faces.
   for (let i = 0; i < count; i++) {
     const next = (i + 1) % count;
-    const wall = positions.length / 3;
-    for (const vertex of [front + i, back + i, back + next, front + next]) {
-      positions.push(positions[3 * vertex], positions[3 * vertex + 1], positions[3 * vertex + 2]);
-      const light = colors[3 * vertex];
-      colors.push(light, light, light);
-    }
-    indices.push(wall, wall + 1, wall + 2, wall, wall + 2, wall + 3);
+    indices.push(front + i, back + i, back + next, front + i, back + next, front + next);
   }
 
   const geometry = new THREE.BufferGeometry();

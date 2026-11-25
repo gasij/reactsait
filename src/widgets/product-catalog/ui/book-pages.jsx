@@ -37,6 +37,13 @@ function Contents({ onTurn }) {
   return (
     <div className={s.contents}>
       <h2>Оглавление</h2>
+      <div className={s.mobileChapters}>
+        {chapters.map(chapter => (
+          <button key={chapter.id} onClick={() => onTurn(chapter.entries[0].spread)}>
+            <span>{chapter.label}</span><span className={s.pageNumber}>{folio(chapter.entries[0].spread * 2)}</span>
+          </button>
+        ))}
+      </div>
       <div className={s.chapters}>
         {chapters.map(chapter => (
           <div className={s.chapter} key={chapter.id}>

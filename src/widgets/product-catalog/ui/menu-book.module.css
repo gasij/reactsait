@@ -1,10 +1,7 @@
 .track {
-  --paper: #f6f0e3;
-  --ink: #28251f;
-  --wine: #751f32;
-  --muted: #6b6257;
+  --paper: var(--bg);
   --line: #c9bca5;
-  --gold: #eabf91;
+  --gold: var(--brand-cream);
   --serif: var(--font-minipax), Georgia, serif;
   --gutter: clamp(24px, 3.3vw, 52px);
   --binding: 0 2px #e9e1cb, 0 3px #b2a691, 0 5px #ece4d0, 0 6px #aca18d,
@@ -70,8 +67,8 @@
   width: 100%;
   padding: 13px;
   border-radius: inherit;
-  color: #fff0da;
-  background: radial-gradient(ellipse at 82% 20%, #913549, transparent 75%), #691c2c;
+  color: var(--brand-cream);
+  background: var(--wine);
 }
 .coverFrame {
   display: flex;
@@ -160,10 +157,10 @@
 .recipeBody h2 { font-size: clamp(35px, 3.7vw, 58px); overflow-wrap: anywhere; }
 .recipeBody p, .letterBody p { margin-top: 22px; max-width: 37ch; font: 400 clamp(17px, 1.45vw, 22px)/1.45 var(--serif); }
 .price { width: fit-content; padding-top: 13px; margin-top: 28px; border-top: 1px solid var(--line); color: var(--wine); font: 600 24px/1.2 var(--serif); }
-.letter { background: #f3ead8; }
+.letter { background: var(--paper); }
 .letter .titleRule { color: var(--wine); }
 .letterBody .signature { color: var(--wine); font-size: 24px; }
-.backCover { background: #16442e; }
+.backCover { background: var(--accent); }
 .backCover .coverFrame { gap: 32px; }
 .backCover img { width: 78%; max-width: 320px; }
 .controls {
@@ -213,44 +210,45 @@
 .track[data-layout='pinned'] .book { grid-area: 1 / 1; visibility: hidden; box-shadow: none; }
 .track[data-layout='pinned'] .book[data-phase] { visibility: visible; }
 
+.mobileChapters { display: none; }
+.book[data-phase] > .left, .book[data-phase] > .right {
+  z-index: 1;
+  backface-visibility: hidden;
+}
+.book[data-phase='out'] > .right {
+  z-index: 3;
+  transform-origin: left center;
+  transform: perspective(var(--paper-perspective)) rotateY(var(--turn-angle, 0deg)) skewY(var(--paper-flex));
+}
+.book[data-phase='in'] > .left {
+  z-index: 3;
+  transform-origin: right center;
+  transform: perspective(var(--paper-perspective)) rotateY(calc(180deg + var(--turn-angle, 0deg))) skewY(calc(-1 * var(--paper-flex)));
+}
+.book[data-phase='out'] > .right, .book[data-phase='in'] > .left {
+  box-shadow: 0 4px 14px rgb(46 32 18 / calc(.24 * var(--curl, 0)));
+}
+.book[data-phase] > div::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: var(--curl, 0);
+}
+.book[data-phase='out'] > .right::before {
+  background: linear-gradient(90deg, #40301c26, #fffaec24 28%, transparent 60%, #4a372c47);
+  box-shadow: inset -2px 0 1px #f9efd4;
+}
+.book[data-phase='in'] > .left::before {
+  background: linear-gradient(90deg, #e3d6ba40, #fff9e725 28%, transparent 62%, #36271b40);
+  box-shadow: inset 2px 0 1px #fff8e2;
+}
+.book[data-phase='out'] > .left::before { background: linear-gradient(to left, #34241952, transparent 76%); }
+.book[data-phase='in'] > .right::before { background: linear-gradient(to right, #34241952, transparent 76%); }
 @media (min-width: 721px) {
   .track[data-layout='pinned'] .controls { padding-top: 24px; }
-  .book[data-phase] > .left, .book[data-phase] > .right {
-    z-index: 1;
-    backface-visibility: hidden;
-  }
-  .book[data-phase='out'] > .right {
-    z-index: 3;
-    transform-origin: left center;
-    transform: perspective(var(--paper-perspective)) rotateY(var(--turn-angle, 0deg)) skewY(var(--paper-flex));
-  }
-  .book[data-phase='in'] > .left {
-    z-index: 3;
-    transform-origin: right center;
-    transform: perspective(var(--paper-perspective)) rotateY(calc(180deg + var(--turn-angle, 0deg))) skewY(calc(-1 * var(--paper-flex)));
-  }
-  .book[data-phase='out'] > .right, .book[data-phase='in'] > .left {
-    box-shadow: 0 4px 14px rgb(46 32 18 / calc(.24 * var(--curl, 0)));
-  }
-  .book[data-phase] > div::before {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    opacity: var(--curl, 0);
-  }
-  .book[data-phase='out'] > .right::before {
-    background: linear-gradient(90deg, #40301c26, #fffaec24 28%, transparent 60%, #4a372c47);
-    box-shadow: inset -2px 0 1px #f9efd4;
-  }
-  .book[data-phase='in'] > .left::before {
-    background: linear-gradient(90deg, #e3d6ba40, #fff9e725 28%, transparent 62%, #36271b40);
-    box-shadow: inset 2px 0 1px #fff8e2;
-  }
-  .book[data-phase='out'] > .left::before { background: linear-gradient(to left, #34241952, transparent 76%); }
-  .book[data-phase='in'] > .right::before { background: linear-gradient(to right, #34241952, transparent 76%); }
 }
 @media (max-height: 820px) and (min-width: 721px) {
   .contents, .recipe, .photoPage, .letter { padding-block: 18px; }
@@ -269,65 +267,43 @@
   .contents, .recipe, .photoPage, .letter { padding-inline: 24px; }
 }
 @media (max-width: 720px) {
-  .track { --book-top: 98px; max-width: 480px; }
-  /* On a narrow screen only the right-hand page is in view. Its binding
-     stays at the left edge while the next full page lies underneath. */
-  .track[data-layout='pinned'] .stack { clip-path: inset(-10% -12px -10% -10px); }
-  .book[data-phase='in'] { z-index: 0; }
-  .book[data-phase='out'] {
-    z-index: 1;
-    transform-origin: left center;
-    transform-style: preserve-3d;
-    transform: perspective(var(--paper-perspective)) rotateY(var(--turn-angle, 0deg)) skewY(var(--paper-flex));
+  .track { --book-top: 100px; width: min(calc(100vw - 16px), 620px); position: relative; left: 50%; margin-left: max(calc(8px - 50vw), -310px); }
+  .book { min-height: clamp(310px, 84vw, 455px); }
+  .cover, .backCover { padding: 6px; }
+  .coverFrame { padding: 16px 7px 5px; }
+  .cover h2 { font-size: clamp(27px, 7vw, 48px); margin: 12px 0 8px; }
+  .subtitle { font-size: 12px; line-height: 1.35; }
+  .coverArt { min-height: 76px; margin: 15px 4px 2px; width: calc(100% - 8px); }
+  .coverLink { gap: 4px; margin-top: 4px; font-size: 12px; }
+  .titleRule::before, .titleRule::after { width: 18px; }
+  .contents, .recipe, .letter, .photoPage { padding: 15px clamp(10px, 3vw, 21px); }
+  .contents h2, .letter h2, .recipeBody h2 { font-size: clamp(23px, 5.8vw, 36px); line-height: 1.02; }
+  .contents h2 { padding-bottom: 10px; }
+  .chapters { display: none; }
+  .mobileChapters { display: grid; margin-block: auto; }
+  .mobileChapters button, .letterLink { display: flex; justify-content: space-between; align-items: center; gap: 4px; min-height: 44px; padding: 8px 0; font: 400 clamp(16px, 3.8vw, 22px)/1.12 var(--serif); color: var(--wine); background: transparent; text-align: left; }
+  .mobileChapters button + button { border-top: 1px solid var(--line); }
+  .photoPage { background: var(--wine); color: var(--brand-cream); }
+  .runningHead { font-size: 9px; letter-spacing: .035em; padding-bottom: 7px; }
+  .photoPage .runningHead { color: inherit; border-color: #e9ddbb55; }
+  .plate { min-height: 100px; margin-top: 14px; border-radius: 80px 80px 1px 1px; overflow: hidden; }
+  .photoPage figcaption { color: inherit; padding-top: 9px; font-size: 14px; }
+  .recipeBody, .letterBody { margin-block: auto; padding: 14px 0 4px; }
+  .recipeBody .titleRule { margin-bottom: 12px; }
+  .recipeBody p, .letterBody p { font-size: clamp(15px, 3.7vw, 19px); line-height: 1.32; margin-top: 12px; }
+  .price { margin-top: 16px; padding-top: 8px; font-size: 19px; }
+  .letterBody .signature { font-size: 17px; }
+  .backCover .coverFrame { gap: 14px; }
+  .backCover img { width: 95%; }
+  .controls, .track[data-layout='flow'] .controls {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 4px;
+    margin-top: 9px;
+    padding: 2px 10px;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 3px;
   }
-  .book[data-phase='out'] > div { backface-visibility: hidden; }
-  .book[data-phase='out']::before, .book[data-phase='out']::after, .book[data-phase='in']::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-  }
-  .book[data-phase='out']::before {
-    background: linear-gradient(to left, #ddd1ba, var(--paper) 35%, #e5dbc7);
-    transform: rotateY(180deg) translateZ(.5px);
-    backface-visibility: hidden;
-  }
-  .book[data-phase='out']::after {
-    background: linear-gradient(90deg, #34241932, #fff8e41c 30%, transparent 65%, #513d2852);
-    opacity: var(--curl, 0);
-    backface-visibility: hidden;
-    transform: translateZ(.5px);
-  }
-  .book[data-phase='in']::after {
-    background: linear-gradient(to right, #34241950, transparent 74%);
-    opacity: var(--curl, 0);
-  }
-  .book[data-cover] .right { display: none; }
-  .book { display: block; min-height: 0; }
-  .left::after, .right::after { display: none; }
-  .right { border-top: 1px solid var(--line); }
-  .cover, .backCover { padding: 10px; }
-  .coverFrame { padding: 20px 20px 8px; }
-  .cover h2 { font-size: clamp(54px, 12vw, 76px); margin-top: 10px; }
-  .subtitle { font-size: 13px; }
-  .coverArt { min-height: 0; flex: auto; aspect-ratio: 1.65; margin-top: 20px; }
-  .coverLink { margin-top: 10px; }
-  .contents, .recipe, .photoPage, .letter { padding: 16px 18px; }
-  .contents h2, .letter h2 { font-size: 40px; }
-  .chapters { padding-block: 18px; }
-  .chapter button, .letterLink { min-height: 44px; align-items: center; font-size: 18px; }
-  .chapter button i { align-self: center; margin-top: .65em; }
-  .photoPage { padding-bottom: 10px; }
-  .photoPage .runningHead { display: none; }
-  .plate { min-height: 0; flex: auto; height: clamp(110px, 22svh, 190px); margin-top: 0; }
-  .recipeBody, .letterBody { padding: 20px 0 4px; }
-  .recipeBody h2 { font-size: clamp(28px, 7.4vw, 40px); }
-  .recipeBody .titleRule { display: none; }
-  .recipeBody p { margin-top: 14px; }
-  .price { margin-top: 18px; }
-  .letter .titleRule { margin-top: 22px; }
-  .backCover .coverFrame { min-height: 240px; gap: 10px; }
-  .backCover img { width: 190px; }
-  .controls { padding: 12px 0 0; }
+  .controls button { gap: 5px; }
+  .controls select { width: 100%; max-width: 100%; }
 }

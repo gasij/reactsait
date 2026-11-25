@@ -1,0 +1,13 @@
+.panel { margin-top: clamp(44px, 7vw, 100px); padding: clamp(32px, 5vw, 80px) 5%; background: var(--wine); color: var(--brand-cream); text-align: center; font-family: var(--font-display); }
+.panel h2 { font-size: clamp(30px, 4.3vw, 68px); text-transform: uppercase; }
+.panel ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5%; margin: clamp(28px, 4vw, 64px) 0; padding: 0; list-style: none; }
+.panel li { position: relative; font-size: clamp(18px, 1.55vw, 25px); line-height: 1.16; }
+.panel li + li::before { content: '✦'; position: absolute; top: 42%; left: -11%; }
+.panel img { width: min(75%, 240px); height: auto; aspect-ratio: 1.08; object-fit: cover; border-radius: 50% 50% 0 0; margin: 0 auto 14px; }
+.promise { max-width: 30em; margin: auto; font-size: clamp(24px, 3.25vw, 52px); line-height: 1.1; text-wrap: balance; }
+@media(max-width: 640px) {
+  .panel ul { grid-template-columns: 1fr; gap: 28px; }
+  .panel img { width: 145px; }
+  .panel li p { max-width: 25ch; margin: auto; }
+  .panel li + li::before { content: none; }
+}

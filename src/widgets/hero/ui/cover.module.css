@@ -1,0 +1,32 @@
+.cover {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  width: 100%;
+  min-height: min(52vw, 760px);
+  color: var(--brand-cream);
+  background: #180f16;
+}
+.scene { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+.copy { width: 51%; padding: 5% 3%; text-align: center; }
+.logo { display: block; width: min(95%, 660px); aspect-ratio: 1100 / 465; margin: 0 auto clamp(24px, 5vw, 82px); background: currentColor; mask: url('/brand/logo-cream.webp') center / contain no-repeat; }
+.copy h1 { font-size: clamp(27px, 3.45vw, 68px); line-height: 1.04; text-transform: uppercase; }
+.menu, .details { display: inline-flex; align-items: center; gap: .8em; color: var(--brand-cream); font: 600 13px/1.3 var(--font-text); }
+.menu { margin-top: 22px; padding: 6px 0; border-bottom: 1px solid currentColor; }
+.menu:hover { color: white; }
+.details { position: absolute; left: 52%; bottom: 4%; padding: 10px 16px; border: 1px solid #dacba8; background: #541016; border-radius: 20px; }
+.details:hover { background: var(--wine); }
+.bookmark { position: absolute; top: 0; left: 44%; padding: clamp(12px, 2vw, 34px) .45em .55em; border-radius: 0 0 .45em .45em; background: var(--brand-cream); color: var(--berry); font: 400 clamp(15px, 2vw, 34px)/.95 var(--font-display); text-align: center; }
+.bookmark span { display: block; margin-bottom: .3em; }
+@media(max-width: 680px) {
+  .cover { display: flex; flex-direction: column; padding-top: 42px; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; z-index: -1; inset: 0 0 35%; background: linear-gradient(#160e1880, #160e18b0), url('/brand/editorial/invitation.webp') left top / 245% auto no-repeat; }
+  .copy { order: -1; width: 100%; padding: 8px 18px 20px; }
+  .logo { width: min(70%, 300px); margin-bottom: 20px; }
+  .copy h1 { font-size: clamp(30px, 7vw, 43px); }
+  .bookmark { left: auto; right: 12px; font-size: 15px; padding-top: 10px; }
+  .menu { margin-top: 12px; }
+  .scene { position: static; width: 100%; height: auto; aspect-ratio: 1.38; object-position: right 66%; object-fit: cover; mask-image: linear-gradient(transparent, black 13%); }
+  .details { left: 33%; bottom: 12px; }
+}
